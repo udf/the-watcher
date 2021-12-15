@@ -4,8 +4,8 @@ import sys
 
 from telethon import events
 
-from proxy_globals import client, logger
-from common import OWNER
+from .proxy_globals import client, logger
+from .common import OWNER
 
 
 start_date = datetime.now().astimezone().replace(microsecond=0).isoformat()

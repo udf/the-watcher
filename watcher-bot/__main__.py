@@ -6,7 +6,7 @@ import sys
 
 from telethon import TelegramClient
 
-import proxy_globals
+from . import proxy_globals
 
 logger = logging.getLogger('main')
 client = TelegramClient('bot', 6, 'eb06d4abfb49dc3eeb1aeb98ae0f581e')
@@ -30,7 +30,7 @@ async def main():
   for module_name in ['p_core', 'p_systemd'] + sys.argv[1:]:
     proxy_globals.logger = logging.getLogger(module_name)
     try:
-      module = importlib.import_module(module_name)
+      module = importlib.import_module(f'.{module_name}', __package__)
     except Exception as e:
       logger.exception(f'Error loading plugin "{module_name}"')
       continue

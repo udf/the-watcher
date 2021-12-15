@@ -6,8 +6,8 @@ from math import floor
 
 import aiohttp
 
-from proxy_globals import client, logger
-from common import OWNER
+from .proxy_globals import client, logger
+from .common import OWNER
 
 SERVER_URL = 'http://127.0.0.1:3000'
 last_processed = time.time()
