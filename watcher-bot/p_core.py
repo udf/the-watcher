@@ -18,3 +18,11 @@ async def ping(event):
     f'\nwith plugins: <code>{" ".join(plugins)}</code>',
     parse_mode='HTML'
   )
+
+
+async def init():
+  await client.send_message(
+    OWNER,
+    f'Watcher started on <code>{gethostname()}</code>',
+    parse_mode='HTML'
+  )

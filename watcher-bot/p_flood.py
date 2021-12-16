@@ -7,7 +7,7 @@ from math import floor
 import aiohttp
 
 from .proxy_globals import client, logger
-from .common import OWNER
+from .common import OWNER, loop_runner
 
 SERVER_URL = 'http://127.0.0.1:3000'
 last_processed = time.time()
@@ -45,3 +45,7 @@ async def main_loop():
           await send_notification(item)
       last_processed = last_fetch
       await asyncio.sleep(5)
+
+
+async def init():
+  asyncio.create_task(loop_runner(logger, main_loop))
