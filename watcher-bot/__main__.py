@@ -27,10 +27,10 @@ async def main():
   proxy_globals.client = client
   proxy_globals.me = await client.get_me()
   loops = []
-  for module_name in ['p_core', 'p_systemd'] + sys.argv[1:]:
+  for module_name in ['core'] + sys.argv[1:]:
     proxy_globals.logger = logging.getLogger(module_name)
     try:
-      module = importlib.import_module(f'.{module_name}', __package__)
+      module = importlib.import_module(f'.p_{module_name}', __package__)
     except Exception as e:
       logger.exception(f'Error loading plugin "{module_name}"')
       continue
