@@ -2,7 +2,6 @@
 import asyncio
 import json
 import time
-from math import floor
 
 import aiohttp
 
@@ -10,7 +9,7 @@ from .proxy_globals import client, logger
 from .common import OWNER, loop_runner
 
 SERVER_URL = 'http://127.0.0.1:3000'
-last_processed = time.time()
+last_processed = time.time() * 1000
 
 
 async def send_notification(item):
@@ -36,14 +35,18 @@ async def main_loop():
     logger.info('Connected to flood, polling')
 
     while 1:
-      last_fetch = floor(time.time())
       r = await session.get(f'{SERVER_URL}/api/notifications')
       res = json.loads(await r.text())
+
+      # treat timestamp as a sequential ID
+      max_id = 0
       notifications = res['notifications']
       for item in notifications:
-        if item['ts'] / 1000 >= last_processed:
+        if item['ts'] > last_processed:
           await send_notification(item)
-      last_processed = last_fetch
+        max_id = max(max_id, item['ts'])
+
+      last_processed = max_id
       await asyncio.sleep(5)
 
 
