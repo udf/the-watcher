@@ -1,14 +1,15 @@
+
+import asyncio
+import sys
 from datetime import datetime
 from socket import gethostname
-import sys
 
+from bepis_bot.runtime import client, logger
 from telethon import events
 
-from .proxy_globals import client, logger
-from .common import OWNER
-
-
+OWNER = 232787997
 start_date = datetime.now().astimezone().replace(microsecond=0).isoformat()
+
 
 @client.on(events.NewMessage(chats=OWNER, pattern='/ping$'))
 async def ping(event):
@@ -20,9 +21,18 @@ async def ping(event):
   )
 
 
-async def init():
+async def on_load():
   await client.send_message(
     OWNER,
     f'Watcher started on <code>{gethostname()}</code>',
     parse_mode='HTML'
   )
+
+
+async def loop_runner(logger, loop_body):
+  while 1:
+    try:
+      await loop_body()
+    except Exception as e:
+      logger.exception('Unhandled exception in loop body')
+    await asyncio.sleep(1)

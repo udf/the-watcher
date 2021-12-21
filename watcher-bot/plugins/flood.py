@@ -5,9 +5,9 @@ import time
 
 import aiohttp
 
-from .proxy_globals import client, logger
-from .common import OWNER, loop_runner
+from bepis_bot.runtime import client, logger, require
 
+core = require('core')
 SERVER_URL = 'http://127.0.0.1:3000'
 last_processed = time.time() * 1000
 
@@ -19,7 +19,7 @@ async def send_notification(item):
   }.get(item['id'], item['id'])
   data = item['data']
   text = data.get('title') or data.get('name') or json.dumps(data)
-  await client.send_message(OWNER, f'Torrent {title}: {text}')
+  await client.send_message(core.OWNER, f'Torrent {title}: {text}')
 
 
 async def main_loop():
@@ -50,5 +50,5 @@ async def main_loop():
       await asyncio.sleep(5)
 
 
-async def init():
-  asyncio.create_task(loop_runner(logger, main_loop))
+async def on_load():
+  asyncio.create_task(core.loop_runner(logger, main_loop))
