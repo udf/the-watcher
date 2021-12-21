@@ -4,12 +4,12 @@ logging.basicConfig(level=logging.INFO)
 import importlib
 import sys
 
-from telethon import TelegramClient
+from .bepis_bot import BepisClient
 
 from . import proxy_globals
 
 logger = logging.getLogger('main')
-client = TelegramClient('bot', 6, 'eb06d4abfb49dc3eeb1aeb98ae0f581e')
+client = BepisClient('bot', 6, 'eb06d4abfb49dc3eeb1aeb98ae0f581e')
 
 
 async def main():
