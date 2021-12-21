@@ -1,0 +1,6 @@
+[submodule "watcher-bot/bepis-bot"]
+	path = watcher-bot/bepis-bot
+	url = git@github.com:udf/bepis-bot.git
+[submodule "watcher-bot/bepis_bot"]
+	path = watcher-bot/bepis_bot
+	url = git@github.com:udf/bepis_bot.git
