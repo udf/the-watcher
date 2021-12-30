@@ -7,7 +7,11 @@ VERSION = '0.1.3'
 setup(
   name='watcher-bot',
   version=VERSION,
-  packages=find_packages() + find_packages('watcher-bot/plugins') + ['watcher-bot.plugins'],
+  packages=(
+    find_packages()
+    + [f'watcher-bot.plugins.{p}' for p in find_packages('watcher-bot/plugins')]
+    + ['watcher-bot.plugins']
+  ),
   install_requires=[
     'telethon',
     'aiohttp'
