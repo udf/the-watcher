@@ -8,12 +8,12 @@ from bepis_bot.runtime import client, logger
 from telethon import events
 
 OWNER = 232787997
-start_date = datetime.now().astimezone().replace(microsecond=0).isoformat()
+start_date = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
 
 
 @client.on(events.NewMessage(chats=OWNER, pattern='/ping$'))
 async def ping(event):
-  plugins = [p for p in sys.modules.keys() if p.startswith('p_')]
+  plugins = list(client._plugins.keys())
   await event.respond(
     f'Running on <code>{gethostname()}</code> since <code>{start_date}</code>'
     f'\nwith plugins: <code>{" ".join(plugins)}</code>',
