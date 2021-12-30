@@ -10,7 +10,7 @@ setup(
   version=VERSION,
   packages=find_packages(),
   data_files=[
-    ('plugins', glob('watcher-bot/plugins/**', recursive=True))
+    ('plugins', glob('watcher-bot/plugins/**/*', recursive=True))
   ],
   install_requires=[
     'telethon',
