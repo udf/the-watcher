@@ -19,7 +19,11 @@ def on_journal_change(j):
     return
 
   for e in j:
-    send_message(f'{e["MESSAGE"]}\n({e["CODE_FUNC"]})')
+    tag = e.get('UNIT') or e.get('USER_UNIT') or e["CODE_FUNC"]
+    uid = e.get('_UID', 0)
+    if uid:
+      tag = f'{tag}@{uid}'
+    send_message(f'<b>[{tag}]</b> {e["MESSAGE"]}')
 
 
 async def on_load():
