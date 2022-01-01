@@ -9,7 +9,7 @@ from bepis_bot.runtime import client, logger, require, config
 
 core = require('core')
 send_message = lambda s: core.send_message('flood', s)
-SERVER_URL = config['flood']['server']
+SERVER_URL = config.flood_server_url
 last_processed = time.time() * 1000
 
 

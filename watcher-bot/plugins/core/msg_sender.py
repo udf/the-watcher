@@ -10,7 +10,6 @@ from telethon.errors import MessageTooLongError
 from telethon.extensions import html
 from bepis_bot.runtime import client, logger, config
 
-OWNER = int(config['core']['owner'])
 hostname = gethostname()
 _msg_queues = defaultdict(asyncio.Queue)
 
@@ -38,7 +37,7 @@ async def _try_send_message(text):
     return MessageTooLongError(None)
   try:
     await client.send_message(
-      OWNER,
+      config.owner,
       raw_text,
       formatting_entities=entities
     )

@@ -1,16 +1,13 @@
 import logging
-from configparser import ConfigParser
 import sys
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 
 from .bepis_bot import BepisClient
+import config
 
 logger = logging.getLogger('main')
-config = ConfigParser()
-config.optionxform = lambda name: name
-config.read('config.ini')
 client = BepisClient(
   session='bot',
   api_id=6,
@@ -20,7 +17,8 @@ client = BepisClient(
 
 
 async def main():
-  await client.start(bot_token=config['core']['token'])
+  client.flood_sleep_threshold = 999999
+  await client.start(bot_token=config.token)
 
   await client.load_plugins(
     path=Path(__file__).parent / 'plugins',

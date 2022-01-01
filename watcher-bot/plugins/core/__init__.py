@@ -1,16 +1,16 @@
 
 import asyncio
 
-from bepis_bot.runtime import client, logger
+from bepis_bot.runtime import client, logger, config
 from telethon import events
 
-from .msg_sender import OWNER, _sender_loop, send_message, utc_fmt
+from .msg_sender import _sender_loop, send_message, utc_fmt
 
 start_date = utc_fmt()
 my_send_message = lambda content: send_message('core', content)
 
 
-@client.on(events.NewMessage(chats=OWNER, pattern='/ping$'))
+@client.on(events.NewMessage(chats=config.owner, pattern='/ping$'))
 async def ping(event):
   plugins = list(client._plugins.keys())
   my_send_message(
