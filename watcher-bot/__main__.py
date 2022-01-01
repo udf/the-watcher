@@ -9,6 +9,7 @@ from .bepis_bot import BepisClient
 
 logger = logging.getLogger('main')
 config = ConfigParser()
+config.optionxform = lambda name: name
 config.read('config.ini')
 client = BepisClient(
   session='bot',
