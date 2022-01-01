@@ -8,9 +8,9 @@ from socket import gethostname
 
 from telethon.errors import MessageTooLongError
 from telethon.extensions import html
-from bepis_bot.runtime import client, logger
+from bepis_bot.runtime import client, logger, config
 
-OWNER = 232787997
+OWNER = int(config['core']['owner'])
 hostname = gethostname()
 _msg_queues = defaultdict(asyncio.Queue)
 

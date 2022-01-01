@@ -5,10 +5,11 @@ import time
 
 import aiohttp
 
-from bepis_bot.runtime import client, logger, require
+from bepis_bot.runtime import client, logger, require, config
 
 core = require('core')
-SERVER_URL = 'http://127.0.0.1:3000'
+send_message = lambda s: core.send_message('flood', s)
+SERVER_URL = config['flood']['server']
 last_processed = time.time() * 1000
 
 
@@ -19,7 +20,7 @@ async def send_notification(item):
   }.get(item['id'], item['id'])
   data = item['data']
   text = data.get('title') or data.get('name') or json.dumps(data)
-  await client.send_message(core.OWNER, f'Torrent {title}: {text}')
+  send_message(f'{title}: {text}')
 
 
 async def main_loop():
