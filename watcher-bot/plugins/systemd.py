@@ -25,6 +25,7 @@ def on_journal_change(j):
     tag = (
       e.get('UNIT')
       or e.get('USER_UNIT')
+      or e.get('_SYSTEMD_UNIT')
       or e.get('CODE_FUNC')
       or e.get('SYSLOG_IDENTIFIER')
       or e.get('_COMM')
