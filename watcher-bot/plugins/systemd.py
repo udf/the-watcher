@@ -8,6 +8,16 @@ core = require('core')
 send_message = lambda s: core.send_message('systemd', s)
 
 should_ignore = getattr(config, 'systemd_should_ignore', lambda e: False)
+priority_emoji = {
+  journal.LOG_EMERG: '🆘',
+  journal.LOG_ALERT: '🚨',
+  journal.LOG_CRIT: '❗️',
+  journal.LOG_ERR: '❌',
+  journal.LOG_WARNING: '⚠️',
+  journal.LOG_NOTICE: '💬',
+  journal.LOG_INFO: 'ℹ️',
+  journal.LOG_DEBUG: '🔤'
+}
 
 j = journal.Reader()
 j.log_level(journal.LOG_INFO)
@@ -33,7 +43,8 @@ def on_journal_change(j):
     uid = e.get('_UID', 0)
     if uid:
       tag = f'{tag}@{uid}'
-    send_message(f'<b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
+    priority = priority_emoji.get(e['PRIORITY'], f'[{e["PRIORITY"]}]')
+    send_message(f'{priority} <b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
 
 
 async def on_load():
