@@ -4,7 +4,7 @@ import asyncio
 from bepis_bot.runtime import client, logger, config
 from telethon import events
 
-from .msg_sender import _sender_loop, send_message, utc_fmt
+from .msg_sender import _sender_loop, send_message, hostname, utc_fmt
 
 start_date = utc_fmt()
 my_send_message = lambda content: send_message('core', content)
