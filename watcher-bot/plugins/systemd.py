@@ -31,6 +31,12 @@ def on_journal_change(j):
     return
 
   for e in j:
+    for name, handler in event_handlers.items():
+      try:
+        handler(e)
+      except Exception as ex:
+        logger.exception(f'Error running handler {name!r}')
+
     if should_ignore(e):
       continue
     tag = (
@@ -46,13 +52,6 @@ def on_journal_change(j):
       tag = f'{tag}@{uid}'
     priority = priority_emoji.get(e['PRIORITY'], f'[{e["PRIORITY"]}]')
     send_message(f'{priority} <b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
-
-  for e in j:
-    for name, handler in event_handlers.items():
-      try:
-        handler(e)
-      except Exception as ex:
-        logger.exception(f'Error running handler {name!r}')
 
 
 def add_handler(name, func):
