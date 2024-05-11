@@ -47,6 +47,7 @@ def on_journal_change(j):
     priority = priority_emoji.get(e['PRIORITY'], f'[{e["PRIORITY"]}]')
     send_message(f'{priority} <b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
 
+  for e in j:
     for name, handler in event_handlers.items():
       try:
         handler(e)
