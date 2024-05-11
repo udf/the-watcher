@@ -22,8 +22,30 @@ async def main():
 
   await client.load_plugins(
     path=Path(__file__).parent / 'plugins',
-    plugin_names=['core'] + sys.argv[1:],
+    plugin_names=['core'],
   )
+
+  # dir/plugin -> load plugin from dir if it's a file, load everything if it's a dir
+  # plugin -> load plugin from built-ins
+
+  for name in sys.argv[1:]:
+    path = Path(name)
+    if path.name == name:
+      # no directory, load single plugin from built-in dir
+      await client.load_plugins(
+        path=Path(__file__).parent / 'plugins',
+        plugin_names=[name],
+      )
+      continue
+    if path.is_dir():
+      # directory, load everything in there
+      await client.load_plugins(path=path.parent)
+      continue
+    # path to file, load it
+    await client.load_plugins(
+      path=path.parent,
+      plugin_names=[path.stem if path.suffix == '.py' else path.name],
+    )
 
   await client.run_until_disconnected()
 
