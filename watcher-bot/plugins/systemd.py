@@ -6,6 +6,7 @@ from bepis_bot.runtime import require, config, logger
 
 core = require('core')
 send_message = lambda s: core.send_message('systemd', s)
+event_handlers = {}
 
 should_ignore = getattr(config, 'systemd_should_ignore', lambda e: False)
 priority_emoji = {
@@ -45,6 +46,18 @@ def on_journal_change(j):
       tag = f'{tag}@{uid}'
     priority = priority_emoji.get(e['PRIORITY'], f'[{e["PRIORITY"]}]')
     send_message(f'{priority} <b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
+
+    for name, handler in event_handlers.items():
+      try:
+        handler(e)
+      except Exception as ex:
+        logger.exception(f'Error running handler {name!r}')
+
+
+def add_handler(name, func):
+  if name in event_handlers:
+    raise ValueError(f'Event handler {name!r} already exists!')
+  event_handlers[name] = func
 
 
 async def on_load():
