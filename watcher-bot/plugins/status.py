@@ -2,7 +2,6 @@
 
 import asyncio
 import dataclasses
-from distutils.log import warn
 import time
 from collections import namedtuple
 from dataclasses import dataclass
