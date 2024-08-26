@@ -3,7 +3,7 @@ import time
 import textwrap
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from socket import gethostname
 
 from telethon.errors import MessageTooLongError
@@ -21,7 +21,7 @@ class Message:
 
 
 def utc_fmt(ts=None):
-  t = datetime.utcfromtimestamp(ts) if ts else datetime.utcnow()
+  t = datetime.fromtimestamp(ts, tz=timezone.utc) if ts else datetime.now(timezone.utc)
   return t.strftime('%Y-%m-%d %H:%M:%S UTC')
 
 
