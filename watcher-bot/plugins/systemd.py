@@ -26,6 +26,10 @@ j.seek_tail()
 j.get_previous()
 
 
+def escape_nonprintable(s):
+  return ''.join((c if c.isprintable() else c.encode("unicode-escape").decode('utf-8')) for c in s)
+
+
 def on_journal_change(j):
   if j.process() != journal.APPEND:
     return
@@ -51,7 +55,7 @@ def on_journal_change(j):
     if uid:
       tag = f'{tag}@{uid}'
     priority = priority_emoji.get(e['PRIORITY'], f'[{e["PRIORITY"]}]')
-    send_message(f'{priority} <b>[{tag}]</b> {e["MESSAGE"].encode("unicode-escape").decode("utf-8")}')
+    send_message(f'{priority} <b>[{tag}]</b> {escape_nonprintable(e["MESSAGE"])}')
 
 
 def add_handler(name, func):
