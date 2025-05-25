@@ -8,7 +8,7 @@ core = require('core')
 send_message = lambda s: core.send_message('systemd', s)
 event_handlers = {}
 
-should_ignore = getattr(config, 'systemd_should_ignore', lambda e: False)
+should_ignore = getattr(config, 'systemd_should_ignore', lambda e, tag: False)
 priority_emoji = {
   journal.LOG_EMERG: '🆘',
   journal.LOG_ALERT: '🚨',
@@ -41,8 +41,6 @@ def on_journal_change(j):
       except Exception as ex:
         logger.exception(f'Error running handler {name!r}')
 
-    if should_ignore(e):
-      continue
     tag = (
       e.get('UNIT')
       or e.get('USER_UNIT')
@@ -51,6 +49,8 @@ def on_journal_change(j):
       or e.get('SYSLOG_IDENTIFIER')
       or e.get('_COMM')
     )
+    if should_ignore(e, tag):
+      continue
     uid = e.get('_UID', 0)
     if uid:
       tag = f'{tag}@{uid}'

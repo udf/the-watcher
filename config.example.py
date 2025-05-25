@@ -8,7 +8,8 @@ flood_server_url = 'http://127.0.0.1:3000'
 # (`journalctl -eo verbose` shows all message fields)
 # and ignore anything from systemd-tmpfiles-clean that's a notice or below
 # PRIORITY is the same as https://en.wikipedia.org/wiki/Syslog#Severity_level
-def systemd_should_ignore(e):
+# tag is the string printed between the [] in the message, it's usually the same as e['UNIT']
+def systemd_should_ignore(e, tag):
   if e['_COMM'] != 'systemd':
     return True
   unit = e.get('UNIT', '')
